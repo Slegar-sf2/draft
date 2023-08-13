@@ -73,12 +73,21 @@ COMBATANT_ENEMIES_SPACE_END: equ combatantEnemiesStart+combatantEnemiesNumber
 ; ---------------------------------------------------------------------------
 
 ; enum Battle_Entity
+
+neutralEntitySize = 8
+    if (STANDARD_BUILD&EXPANDED_MAPSPRITES=1)
+neutralEntitySize = 10
+    endif
+
+
 ENTITY_ENEMY_COUNTER: equ $1D
 ENTITY_ALLY_COUNTER: equ $1F
 ENTITY_ENEMY_COUNT: equ $20
 ENTITY_ALLY_COUNT: equ $20
 ENTITY_TOTAL_COUNTER: equ $3F
 ENTITY_TOTAL: equ $40
+
+NEUTRAL_ENTITY_SIZE: equ neutralEntitySize
 
 ; ---------------------------------------------------------------------------
 
@@ -1297,27 +1306,41 @@ MITHRILWEAPON_CLASSES_COUNTER: equ $7
 ; enum MapDef
 MAP_SIZE_MAXHEIGHT: equ $30
 MAP_SIZE_MAXWIDTH: equ $30
+MAP_TILE_SIZE: equ $180
+MAP_TILE_PLUS: equ $180
 MAP_ARRAY_SIZE: equ $900
 MAP_BLOCKINDEX_CLOSED_CHEST: equ $D801
 MAP_BLOCKINDEX_OPEN_CHEST: equ $D802
+MAP_TILE_MINUS: equ $FE80
 MAP_NULLPOSITION: equ $FFFF
 
 ; ---------------------------------------------------------------------------
 
 ; enum Map_Entity
+
+entityVelocityYOffset = 6
+entityDestinationXOffset = 12
+entityDestinationYOffset = 14
+entityMapspriteOffset = 19
+entitySize = 32
+    if (STANDARD_BUILD&EXPANDED_MAPSPRITES=1)
+entityVelocityYOffset = 5
+entityMapspriteOffset = 6
+    endif
+
 ENTITYDEF_OFFSET_X: equ $0
 ENTITYDEF_OFFSET_Y: equ $2
 ENTITYDEF_OFFSET_XVELOCITY: equ $4
 ENTITYDEF_SIZE_BITS: equ $5
-ENTITYDEF_OFFSET_YVELOCITY: equ $6
+ENTITYDEF_OFFSET_YVELOCITY: equ entityVelocityYOffset
 ENTITYDEF_OFFSET_XTRAVEL: equ $8
 ENTITYDEF_OFFSET_YTRAVEL: equ $A
-ENTITYDEF_OFFSET_XDEST: equ $C
-ENTITYDEF_OFFSET_YDEST: equ $E
+ENTITYDEF_OFFSET_XDEST: equ entityDestinationXOffset
+ENTITYDEF_OFFSET_YDEST: equ entityDestinationYOffset
 ENTITYDEF_OFFSET_FACING: equ $10
 ENTITYDEF_OFFSET_LAYER: equ $11
 ENTITYDEF_OFFSET_ENTNUM: equ $12
-ENTITYDEF_OFFSET_MAPSPRITE: equ $13
+ENTITYDEF_OFFSET_MAPSPRITE: equ entityMapspriteOffset
 ENTITYDEF_OFFSET_ACTSCRIPTADDR: equ $14
 ENTITYDEF_OFFSET_XACCEL: equ $18
 ENTITYDEF_OFFSET_YACCEL: equ $19
@@ -1327,13 +1350,13 @@ ENTITYDEF_OFFSET_FLAGS_A: equ $1C
 ENTITYDEF_OFFSET_FLAGS_B: equ $1D
 ENTITYDEF_OFFSET_ANIMCOUNTER: equ $1E
 ENTITYDEF_OFFSET_ACTSCRIPTWAITTIMER: equ $1F
-ENTITYDEF_SIZE: equ $20
-NEXT_ENTITYDEF: equ $20
-ENTITYDEF_SECOND_ENTITY_XDEST: equ $2C
-ENTITYDEF_SECOND_ENTITY_YDEST: equ $2E
-ENTITYDEF_SECOND_ENTITY_MAPSPRITE: equ $33
-ENTITYDEF_ENTITY32_XDEST: equ $3EC
-ENTITYDEF_ENTITY32_YDEST: equ $3EE
+ENTITYDEF_SIZE: equ entitySize
+NEXT_ENTITYDEF: equ entitySize
+ENTITYDEF_SECOND_ENTITY_XDEST: equ entitySize+entityDestinationXOffset
+ENTITYDEF_SECOND_ENTITY_YDEST: equ entitySize+entityDestinationYOffset
+ENTITYDEF_SECOND_ENTITY_MAPSPRITE: equ entitySize+entityMapspriteOffset
+ENTITYDEF_ENTITY32_XDEST: equ 31*entitySize+entityDestinationXOffset
+ENTITYDEF_ENTITY32_YDEST: equ 31*entitySize+entityDestinationYOffset
 
 ; ---------------------------------------------------------------------------
 
@@ -3537,6 +3560,8 @@ MAPSPRITE_DEFAULT: equ $0
 MAPSPRITES_ENEMIES_START: equ $40
 MAPSPRITES_NPCS_START: equ $AA
 MAPSPRITES_SPECIALS_START: equ $F0
+MAPSPRITES_SPECIALS_END: equ $FF
+MAPSPRITE_MASK: equ $FF
 
 ; ---------------------------------------------------------------------------
 
@@ -3602,9 +3627,17 @@ PORTRAIT_DEFAULT: equ $FFFF
 ; ---------------------------------------------------------------------------
 
 ; enum SpriteDialogDef
+
+spriteDialogPortraitOffset = 1
+spriteDialogSoundOffset = 2
+    if (STANDARD_BUILD&EXPANDED_MAPSPRITES=1)
+spriteDialogPortraitOffset = 2
+spriteDialogSoundOffset = 3
+    endif
+
 SPRITEDIALOGDEF_OFFSET_MAPSPRITE: equ $0
-SPRITEDIALOGDEF_OFFSET_PORTRAIT: equ $1
-SPRITEDIALOGDEF_OFFSET_SPEECHSFX: equ $2
+SPRITEDIALOGDEF_OFFSET_PORTRAIT: equ spriteDialogPortraitOffset
+SPRITEDIALOGDEF_OFFSET_SPEECHSFX: equ spriteDialogSoundOffset
 SPRITEDIALOGDEF_OFFSET_UNDEFINED: equ $3
 SPRITEDIALOGDEF_ENTRY_SIZE: equ $4
 

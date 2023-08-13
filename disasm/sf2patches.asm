@@ -86,6 +86,7 @@ EXPANDED_CLASSES:                   equ 1       ; Enable support for 64 classes.
 EXPANDED_ITEMS_AND_SPELLS:          equ 1       ; Expand number of items from 127 to 255, and number of spells from 44 to 63. Forces build of 4MB ROM with 32KB SRAM.
 OPTIMIZED_ROM_LAYOUT:               equ 1       ; Align ROM sections to next word boundary to consolidate free space.
 REGION_FREE_ROM:                    equ 1       ; Skip checking system region, omit including related function, and update ROM header.
+EXPANDED_MAPSPRITES:                equ 1       ; Stores mapsprite index in word-sized structure allowing 65k+ unique sprites.
 
 ; Assembler optimizations
 OPTIMIZED_PC_RELATIVE_ADDRESSING:   equ 1       ; Optimize to PC relative addressing.

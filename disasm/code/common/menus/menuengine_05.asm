@@ -452,6 +452,16 @@ loc_12D34:
                 add.w   d2,d0
                 add.w   d3,d1
                 move.w  #$E0FE,d4
+            if (STANDARD_BUILD&EXPANDED_MAPSPRITES=1)
+                cmpi.w  #MAPSPRITES_ENEMIES_START,ENTITYDEF_OFFSET_MAPSPRITE(a0)
+                bcs.s   loc_12D5A
+                cmpi.w  #MAPSPRITES_NPCS_START,ENTITYDEF_OFFSET_MAPSPRITE(a0)
+                bhi.s   loc_12D5A
+                subq.w  #1,d4
+loc_12D5A:
+                
+                cmpi.w  #MAPSPRITES_SPECIALS_START,ENTITYDEF_OFFSET_MAPSPRITE(a0)
+            else
                 cmpi.b  #MAPSPRITES_ENEMIES_START,ENTITYDEF_OFFSET_MAPSPRITE(a0)
                 bcs.s   loc_12D5A
                 cmpi.b  #MAPSPRITES_NPCS_START,ENTITYDEF_OFFSET_MAPSPRITE(a0)
@@ -460,6 +470,7 @@ loc_12D34:
 loc_12D5A:
                 
                 cmpi.b  #MAPSPRITES_SPECIALS_START,ENTITYDEF_OFFSET_MAPSPRITE(a0)
+            endif
                 bcs.s   loc_12D64
                 subq.w  #1,d4
 loc_12D64:

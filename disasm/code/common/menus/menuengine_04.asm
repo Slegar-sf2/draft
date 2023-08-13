@@ -313,11 +313,19 @@ loc_11E74:
                 
                 checkSavedByte #PLAYERTYPE_CARAVAN, PLAYER_TYPE
                 bne.s   loc_11E80
-                moveq   #$3E,d4 
+            if (STANDARD_BUILD&EXPANDED_MAPSPRITES=1)
+                move.w   #MAPSPRITE_CARAVAN,d4
                 bra.s   loc_11E82
 loc_11E80:
                 
-                moveq   #$3D,d4 
+                move.w   #MAPSPRITE_RAFT,d4
+            else
+                moveq   #MAPSPRITE_CARAVAN,d4 
+                bra.s   loc_11E82
+loc_11E80:
+                
+                moveq   #MAPSPRITE_RAFT,d4 
+            endif
 loc_11E82:
                 
                 clr.w   d0
